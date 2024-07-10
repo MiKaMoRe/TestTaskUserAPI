@@ -4,7 +4,12 @@ class Api::V1::UsersController < ApplicationController
   respond_to :json
   
   def index
-    render_success({ users: User.all.map(&:serialize) })
+    cache = ReadCache.redis.get('users:index')
+
+    users_data = cache ? JSON(cache) : User.all.map(&:serialize)
+    ReadCache.redis.set('users:index', users_data.to_json, ex: 300) unless cache
+
+    render_success({ users: users_data })
   end
 
   def show

@@ -27,6 +27,11 @@ class ApplicationController < ActionController::API
 
     jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first
     User.find(jwt_payload['sub'])
+  rescue JWT::ExpiredSignature
+    render json: {
+      status: 401,
+      message: 'Signature has expired'
+    }, status: :unauthorized
   end
 
   def authorize_request!
