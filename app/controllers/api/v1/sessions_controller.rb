@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::SessionsController < Devise::SessionsController
-  # include RackSessionsFix
-
-  # respond_to :json
-  # before_action :configure_sign_in_params, only: [:create]
   skip_before_action :authorize_request!, only: [:create]
 
   # GET /resource/sign_in

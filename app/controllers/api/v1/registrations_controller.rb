@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::RegistrationsController < Devise::RegistrationsController
-  include RackSessionsFix
-
   skip_before_action :authorize_request!, only: [:create]
 
   before_action :configure_sign_up_params, only: [:create]
